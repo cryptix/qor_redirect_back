@@ -103,19 +103,19 @@ func (redirectBack *RedirectBack) RedirectBack(w http.ResponseWriter, req *http.
 
 	if returnTo != nil {
 		if returnToStr := fmt.Sprint(returnTo); "" != returnToStr {
-			http.Redirect(w, req, returnToStr, http.StatusSeeOther)
+			http.Redirect(w, req, returnToStr, http.StatusFound)
 			return
 		}
 	}
 
 	if referrer := req.Referer(); referrer != "" {
 		if u, _ := url.Parse(referrer); !redirectBack.IgnorePath(u.Path) {
-			http.Redirect(w, req, referrer, http.StatusSeeOther)
+			http.Redirect(w, req, referrer, http.StatusFound)
 			return
 		}
 	}
 
-	http.Redirect(w, req, redirectBack.config.FallbackPath, http.StatusSeeOther)
+	http.Redirect(w, req, redirectBack.config.FallbackPath, http.StatusFound)
 }
 
 // Middleware returns a RedirectBack middleware instance that record return_to path
